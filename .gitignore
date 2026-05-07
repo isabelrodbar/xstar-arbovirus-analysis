@@ -1,13 +1,12 @@
-# Exclude everything by default
-*
-
-# Include only the outputs/web folder and its contents
-!.gitignore
-!outputs/
-!outputs/web/
-!outputs/web/**
-
 # R specific
 .Rhistory
 .RData
 .Rproj.user
+.DS_Store
+
+# Exclude data and temporary outputs
+Data/
+outputs/overall/
+outputs/temp*/
+*.Rmd
+*.R

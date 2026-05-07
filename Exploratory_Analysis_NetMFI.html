@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Sample MFI Distributions" />
+
+<meta name="date" content="2026-05-06" />
+
+<title>Xstar Arbovirus - Exploratory Data Analysis (Net MFI)</title>
+
+<script src="Exploratory_Analysis_NetMFI_files/header-attrs-2.30/header-attrs.js"></script>
+<script src="Exploratory_Analysis_NetMFI_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="Exploratory_Analysis_NetMFI_files/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="Exploratory_Analysis_NetMFI_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="Exploratory_Analysis_NetMFI_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="Exploratory_Analysis_NetMFI_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="Exploratory_Analysis_NetMFI_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="Exploratory_Analysis_NetMFI_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="Exploratory_Analysis_NetMFI_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="Exploratory_Analysis_NetMFI_files/navigation-1.1/tabsets.js"></script>
+<script src="Exploratory_Analysis_NetMFI_files/navigation-1.1/codefolding.js"></script>
+<link href="Exploratory_Analysis_NetMFI_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="Exploratory_Analysis_NetMFI_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Xstar Arbovirus - Exploratory Data Analysis
+(Net MFI)</h1>
+<h4 class="author">Sample MFI Distributions</h4>
+<h4 class="date">2026-05-06</h4>
+
+</div>
+
+
+<div id="setup" class="section level1">
+<h1>Setup</h1>
+<pre class="r"><code>library(tidyverse)
+library(readr)
+library(ggplot2)
+library(ggbeeswarm)
+library(knitr)
+library(patchwork)
+
+# Set ggplot theme
+theme_set(theme_bw(base_size = 12))</code></pre>
+<pre class="r"><code># Load merged data with LLINEUP metadata
+mfi_long &lt;- read_csv(&quot;outputs/overall/merged_mfi_long_with_metadata.csv&quot;, show_col_types = FALSE)
+
+# Load count data to get low count flags
+count_long &lt;- read_csv(&quot;outputs/overall/merged_count_long_with_metadata.csv&quot;, show_col_types = FALSE)
+
+# Add low count flag (&lt; 30 beads)
+count_long &lt;- count_long %&gt;%
+  mutate(LowCount_Flag = Count &lt; 30)
+
+# Merge MFI with count flags
+mfi_long &lt;- mfi_long %&gt;%
+  left_join(
+    count_long %&gt;% select(PlateNumber, WellPosition, Analyte, Wave, Count, LowCount_Flag),
+    by = c(&quot;PlateNumber&quot;, &quot;WellPosition&quot;, &quot;Analyte&quot;, &quot;Wave&quot;)
+  )
+
+cat(sprintf(&quot;Loaded MFI data with metadata: %d rows\n&quot;, nrow(mfi_long)))</code></pre>
+<pre><code>## Loaded MFI data with metadata: 66082 rows</code></pre>
+<pre class="r"><code>cat(sprintf(&quot;Unique regions: %d\n&quot;, n_distinct(mfi_long$region, na.rm = TRUE)))</code></pre>
+<pre><code>## Unique regions: 4</code></pre>
+<pre class="r"><code>cat(sprintf(&quot;Unique sites (mrccode): %d\n&quot;, n_distinct(mfi_long$mrccode, na.rm = TRUE)))</code></pre>
+<pre><code>## Unique sites (mrccode): 12</code></pre>
+<pre class="r"><code>cat(sprintf(&quot;Waves: %s\n&quot;, paste(unique(mfi_long$Wave), collapse = &quot;, &quot;)))</code></pre>
+<pre><code>## Waves: Wave 3, Wave 5</code></pre>
+<pre class="r"><code># All data is already participant samples only (standards and blanks excluded in merge)
+# Already filtered to LLINEUP2 study samples with barcodes
+sample_mfi &lt;- mfi_long
+
+# Parse mrccode to extract site and district
+sample_mfi &lt;- sample_mfi %&gt;%
+  mutate(
+    # Extract site name (everything before &quot; HC&quot;)
+    Site = str_extract(mrccode, &quot;^[^H]+(?= HC)&quot;),
+    # Extract district (text inside parentheses, remove &quot; District&quot;)
+    District = str_extract(mrccode, &quot;(?&lt;=\\()[^)]+(?=\\))&quot;) %&gt;% str_remove(&quot; District&quot;)
+  )
+
+cat(sprintf(&quot;Sample data (LLINEUP2 participants): %d measurements\n&quot;, nrow(sample_mfi)))</code></pre>
+<pre><code>## Sample data (LLINEUP2 participants): 66082 measurements</code></pre>
+<pre class="r"><code>cat(sprintf(&quot;Number of unique samples (barcodes): %d\n&quot;, n_distinct(sample_mfi$Barcode)))</code></pre>
+<pre><code>## Number of unique samples (barcodes): 1378</code></pre>
+<pre class="r"><code>cat(sprintf(&quot;Number of plates: %d\n&quot;, n_distinct(sample_mfi$PlateNumber)))</code></pre>
+<pre><code>## Number of plates: 19</code></pre>
+<pre class="r"><code>cat(sprintf(&quot;Number of sites: %d\n&quot;, n_distinct(sample_mfi$Site, na.rm = TRUE)))</code></pre>
+<pre><code>## Number of sites: 12</code></pre>
+<pre class="r"><code>cat(sprintf(&quot;Number of districts: %d\n&quot;, n_distinct(sample_mfi$District, na.rm = TRUE)))</code></pre>
+<pre><code>## Number of districts: 12</code></pre>
+<pre class="r"><code>cat(sprintf(&quot;Number of regions: %d\n&quot;, n_distinct(sample_mfi$region, na.rm = TRUE)))</code></pre>
+<pre><code>## Number of regions: 4</code></pre>
+<pre class="r"><code>cat(sprintf(&quot;Number of analytes: %d\n&quot;, n_distinct(sample_mfi$Analyte)))</code></pre>
+<pre><code>## Number of analytes: 47</code></pre>
+<pre class="r"><code>cat(&quot;\nSamples by wave:\n&quot;)</code></pre>
+<pre><code>## 
+## Samples by wave:</code></pre>
+<pre class="r"><code>sample_mfi %&gt;%
+  distinct(Barcode, Wave) %&gt;%
+  count(Wave, name = &quot;n_samples&quot;) %&gt;%
+  arrange(Wave) %&gt;%
+  print()</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##   Wave   n_samples
+##   &lt;chr&gt;      &lt;int&gt;
+## 1 Wave 3       472
+## 2 Wave 5       906</code></pre>
+<pre class="r"><code>cat(&quot;\nSamples by site:\n&quot;)</code></pre>
+<pre><code>## 
+## Samples by site:</code></pre>
+<pre class="r"><code>sample_mfi %&gt;%
+  distinct(Barcode, Site, Wave) %&gt;%
+  filter(!is.na(Site)) %&gt;%
+  count(Site, Wave) %&gt;%
+  arrange(Site, Wave) %&gt;%
+  print()</code></pre>
+<pre><code>## # A tibble: 12 × 3
+##    Site      Wave       n
+##    &lt;chr&gt;     &lt;chr&gt;  &lt;int&gt;
+##  1 Bbaale    Wave 5    52
+##  2 Butagaya  Wave 5   133
+##  3 Diima     Wave 3   151
+##  4 Kibaale   Wave 5    98
+##  5 Kidera    Wave 5   131
+##  6 Kigandalo Wave 5   118
+##  7 Kigorobya Wave 3   135
+##  8 Kiyunga   Wave 5   126
+##  9 Kyatiri   Wave 3   121
+## 10 Kyegegwa  Wave 5    59
+## 11 Nawaikoke Wave 5   143
+## 12 Patongo   Wave 3    54</code></pre>
+<pre class="r"><code>cat(&quot;\nSamples by district:\n&quot;)</code></pre>
+<pre><code>## 
+## Samples by district:</code></pre>
+<pre class="r"><code>sample_mfi %&gt;%
+  distinct(Barcode, District, Wave) %&gt;%
+  filter(!is.na(District)) %&gt;%
+  count(District, Wave) %&gt;%
+  arrange(District, Wave) %&gt;%
+  print()</code></pre>
+<pre><code>## # A tibble: 12 × 3
+##    District    Wave       n
+##    &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;
+##  1 Agago       Wave 3    54
+##  2 Buyende     Wave 5   131
+##  3 Hoima       Wave 3   135
+##  4 Jinja       Wave 5   133
+##  5 Kaliro      Wave 5   143
+##  6 Kayunga     Wave 5    52
+##  7 Kibaale     Wave 5    98
+##  8 Kiryandongo Wave 3   151
+##  9 Kyegegwa    Wave 5    59
+## 10 Luuka       Wave 5   126
+## 11 Masindi     Wave 3   121
+## 12 Mayuge      Wave 5   118</code></pre>
+<pre class="r"><code>cat(&quot;\nSamples by type:\n&quot;)</code></pre>
+<pre><code>## 
+## Samples by type:</code></pre>
+<pre class="r"><code>sample_mfi %&gt;%
+  distinct(Barcode, SampleType) %&gt;%
+  count(SampleType, name = &quot;n_samples&quot;) %&gt;%
+  arrange(desc(n_samples)) %&gt;%
+  print()</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   SampleType   n_samples
+##   &lt;chr&gt;            &lt;int&gt;
+## 1 Normal            1365
+## 2 PBT                 11
+## 3 Faint Eluent         3</code></pre>
+<pre class="r"><code># Define analyte groupings and sorting order
+# Each group has analytes sorted by pathogen/serotype, then by antigen type
+
+analyte_groups &lt;- list(
+  DENV = c(
+    # DENV1
+    &quot;ARB_DENV1_NS1&quot;, &quot;ARB_DENV1_VLP&quot;, &quot;ARB_SNAP_DENV1_DIII&quot;,
+    # DENV2
+    &quot;ARB_DENV2_NS1&quot;, &quot;ARB_DENV2_VLP&quot;, &quot;ARB_SNAP_DENV2_DIII&quot;,
+    # DENV3
+    &quot;ARB_DENV3_NS1&quot;, &quot;ARB_DENV3_VLP&quot;, &quot;ARB_SNAP_DENV3_DIII&quot;,
+    # DENV4
+    &quot;ARB_DENV4_NS1&quot;, &quot;ARB_DENV4_VLP&quot;, &quot;ARB_SNAP_DENV4_DIII&quot;
+  ),
+
+  Other_Arboviruses = c(
+    # CCHFV
+    &quot;ARB_CCHFV_NP&quot;,
+    # CHIKV
+    &quot;ARB_CHIKV_E2&quot;, &quot;ARB_CHIKV_VLP&quot;,
+    # ONNV
+    &quot;ARB_ONNV_E2&quot;,
+    # RVFV
+    &quot;ARB_RVFV&quot;,
+    # USUV
+    &quot;ARB_USUV_NS1&quot;, &quot;ARB_SNAP_USUV_DIII&quot;,
+    # WNV
+    &quot;ARB_WNV_NS1&quot;, &quot;ARB_SNAP_WNV_DIII&quot;,
+    # YFV
+    &quot;ARB_YFV_NS1&quot;, &quot;ARB_SNAP_YFV_DIII&quot;,
+    # ZIKV
+    &quot;ARB_ZIKV_NS1&quot;, &quot;ARB_ZIKV_VLP&quot;, &quot;ARB_SNAP_ZIKV_DIII&quot;
+  ),
+
+  # Split Other_Arboviruses for site-based plotting (to avoid crowding)
+  Other_Arboviruses_NonFlavi = c(
+    &quot;ARB_CCHFV_NP&quot;,
+    &quot;ARB_CHIKV_E2&quot;, &quot;ARB_CHIKV_VLP&quot;,
+    &quot;ARB_ONNV_E2&quot;,
+    &quot;ARB_RVFV&quot;
+  ),
+
+  Other_Arboviruses_Flavi = c(
+    &quot;ARB_USUV_NS1&quot;, &quot;ARB_SNAP_USUV_DIII&quot;,
+    &quot;ARB_WNV_NS1&quot;, &quot;ARB_SNAP_WNV_DIII&quot;,
+    &quot;ARB_YFV_NS1&quot;, &quot;ARB_SNAP_YFV_DIII&quot;,
+    &quot;ARB_ZIKV_NS1&quot;, &quot;ARB_ZIKV_VLP&quot;, &quot;ARB_SNAP_ZIKV_DIII&quot;
+  ),
+
+  Malaria = c(
+    &quot;MAL_PfMSP1&quot;, &quot;MAL_PvMSP1&quot;, &quot;MAL_PmMSP1&quot;, &quot;MAL_PoMSP1&quot;
+  ),
+
+  NTD = c(
+    &quot;NTD_leishmania_K39&quot;, &quot;NTD_pgp3&quot;, &quot;NTD_cp23&quot;, &quot;NTD_VSP5&quot;, &quot;NTD_NIE&quot;
+  ),
+
+  Hepatitis_Cholera = c(
+    &quot;HEP_HEV_ORF2&quot;, &quot;CHO_CtxB&quot;, &quot;CHO_Inaba_OSP&quot;, &quot;CHO_Ogawa_OSP&quot;
+  ),
+
+  VPD = c(
+    &quot;VPD_B_pertussis_FHA&quot;, &quot;VPD_Diphteria_Tox&quot;, &quot;VPD_measles_NP&quot;, &quot;VPD_Tetanus_Toxin&quot;
+  ),
+
+  HHV = c(
+    &quot;HHV_EBV_gp125&quot;, &quot;HHV_CMV&quot;
+  ),
+
+  Controls = c(
+    &quot;CTRL_BSA&quot;, &quot;CTRL_SNAP&quot;
+  )
+)
+
+# Define DENV serotype-specific groups for site-based plotting
+denv_serotype_groups &lt;- list(
+  DENV1 = c(&quot;ARB_DENV1_NS1&quot;, &quot;ARB_DENV1_VLP&quot;, &quot;ARB_SNAP_DENV1_DIII&quot;),
+  DENV2 = c(&quot;ARB_DENV2_NS1&quot;, &quot;ARB_DENV2_VLP&quot;, &quot;ARB_SNAP_DENV2_DIII&quot;),
+  DENV3 = c(&quot;ARB_DENV3_NS1&quot;, &quot;ARB_DENV3_VLP&quot;, &quot;ARB_SNAP_DENV3_DIII&quot;),
+  DENV4 = c(&quot;ARB_DENV4_NS1&quot;, &quot;ARB_DENV4_VLP&quot;, &quot;ARB_SNAP_DENV4_DIII&quot;)
+)
+
+# Get unique wave-plate identifiers (ordered by wave and plate number)
+waveplates &lt;- sample_mfi %&gt;%
+  distinct(Wave, PlateNumber_Clean, WavePlate) %&gt;%
+  arrange(Wave, as.numeric(PlateNumber_Clean)) %&gt;%
+  pull(WavePlate)</code></pre>
+<pre class="r"><code># Helper function to create beeswarm plot for a single analyte (by plate, colored by Wave)
+plot_sample_mfi_beeswarm &lt;- function(data, analyte_name) {
+  # Filter data for this analyte and remove non-positive MFI values for log scale
+  plot_data &lt;- data %&gt;%
+    filter(Analyte == analyte_name, !is.na(MFI_Net), MFI_Net &gt; 0) %&gt;%
+    mutate(
+      # Create ordered factor for WavePlate based on Wave and plate number
+      WavePlate = factor(WavePlate, levels = unique(WavePlate[order(Wave, as.numeric(PlateNumber_Clean))])),
+      SampleType = factor(SampleType, levels = c(&quot;Normal&quot;, &quot;PBT&quot;, &quot;Faint Eluent&quot;, &quot;Faint&quot;))
+    )
+
+  # Calculate summary statistics
+  n_samples &lt;- n_distinct(plot_data$Barcode)
+  median_mfi &lt;- median(plot_data$MFI_Net, na.rm = TRUE)
+  n_flagged &lt;- sum(plot_data$LowCount_Flag, na.rm = TRUE)
+  pct_flagged &lt;- 100 * mean(plot_data$LowCount_Flag, na.rm = TRUE)
+
+  # Count special sample types
+  n_special &lt;- sum(plot_data$SampleType != &quot;Normal&quot;)
+
+  # Count by wave
+  wave_counts &lt;- plot_data %&gt;% distinct(Barcode, Wave) %&gt;% count(Wave)
+  wave_text &lt;- paste(sprintf(&quot;%s: %d&quot;, wave_counts$Wave, wave_counts$n), collapse = &quot; | &quot;)
+
+  # Create plot with Wave coloring
+  p &lt;- ggplot(plot_data, aes(x = WavePlate, y = MFI_Net)) +
+    geom_beeswarm(aes(color = Wave, shape = LowCount_Flag), alpha = 0.7, cex = 1.5, size = 1.5) +
+    geom_boxplot(alpha = 0.2, outlier.shape = NA, width = 0.5) +
+    scale_color_manual(
+      values = c(&#39;Wave 3&#39; = &#39;#E41A1C&#39;, &#39;Wave 5&#39; = &#39;#377EB8&#39;),
+      name = &#39;Wave&#39;
+    ) +
+    scale_shape_manual(
+      values = c(&#39;FALSE&#39; = 16, &#39;TRUE&#39; = 4),
+      labels = c(&#39;FALSE&#39; = &#39;Count OK&#39;, &#39;TRUE&#39; = &#39;Count Low&#39;),
+      name = &#39;Bead Count&#39;
+    ) +
+    scale_y_log10() +
+    labs(
+      title = analyte_name,
+      subtitle = sprintf(&quot;N = %d samples (%s) | Net MFI = %.0f | %.1f%% low count&quot;,
+                         n_samples, wave_text, median_mfi, pct_flagged),
+      x = &#39;Wave-Plate&#39;,
+      y = &#39;MFI (Net, log scale)&#39;
+    ) +
+    theme_bw(base_size = 11) +
+    theme(
+      legend.position = &#39;bottom&#39;,
+      plot.title = element_text(size = 12, face = &quot;bold&quot;),
+      plot.subtitle = element_text(size = 9, color = &quot;gray30&quot;),
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    )
+
+  return(p)
+}
+
+# Helper function to create beeswarm plot by site (colored by Wave)
+plot_sample_mfi_by_site &lt;- function(data, analyte_name, group_by = &quot;Site&quot;) {
+  # Filter data for this analyte and remove non-positive MFI values for log scale
+  plot_data &lt;- data %&gt;%
+    filter(Analyte == analyte_name, !is.na(.data[[group_by]]), !is.na(MFI_Net), MFI_Net &gt; 0) %&gt;%
+    mutate(Group = factor(.data[[group_by]]),
+           SampleType = factor(SampleType, levels = c(&quot;Normal&quot;, &quot;PBT&quot;, &quot;Faint Eluent&quot;, &quot;Faint&quot;)))
+
+  # Calculate summary statistics
+  n_samples &lt;- n_distinct(plot_data$Barcode)
+  median_mfi &lt;- median(plot_data$MFI_Net, na.rm = TRUE)
+  n_flagged &lt;- sum(plot_data$LowCount_Flag, na.rm = TRUE)
+  pct_flagged &lt;- 100 * mean(plot_data$LowCount_Flag, na.rm = TRUE)
+
+  # Count by wave
+  wave_counts &lt;- plot_data %&gt;% distinct(Barcode, Wave) %&gt;% count(Wave)
+  wave_text &lt;- paste(sprintf(&quot;%s: %d&quot;, wave_counts$Wave, wave_counts$n), collapse = &quot; | &quot;)
+
+  # Create plot with Wave coloring
+  p &lt;- ggplot(plot_data, aes(x = Group, y = MFI_Net)) +
+    geom_beeswarm(aes(color = Wave, shape = LowCount_Flag), alpha = 0.7, cex = 0.8, size = 1.2) +
+    geom_boxplot(alpha = 0.2, outlier.shape = NA, width = 0.5) +
+    scale_color_manual(
+      values = c(&#39;Wave 3&#39; = &#39;#E41A1C&#39;, &#39;Wave 5&#39; = &#39;#377EB8&#39;),
+      name = &#39;Wave&#39;
+    ) +
+    scale_shape_manual(
+      values = c(&#39;FALSE&#39; = 16, &#39;TRUE&#39; = 4),
+      labels = c(&#39;FALSE&#39; = &#39;Count OK&#39;, &#39;TRUE&#39; = &#39;Count Low&#39;),
+      name = &#39;Bead Count&#39;
+    ) +
+    scale_y_log10() +
+    labs(
+      title = analyte_name,
+      subtitle = sprintf(&quot;N = %d samples (%s) | Net MFI = %.0f | %.1f%% low count&quot;,
+                         n_samples, wave_text, median_mfi, pct_flagged),
+      x = group_by,
+      y = &#39;MFI (Net, log scale)&#39;
+    ) +
+    theme_bw(base_size = 11) +
+    theme(
+      legend.position = &#39;bottom&#39;,
+      plot.title = element_text(size = 12, face = &quot;bold&quot;),
+      plot.subtitle = element_text(size = 9, color = &quot;gray30&quot;),
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    )
+
+  return(p)
+}
+
+# Helper function to create single panel plot for a disease group (with Wave coloring)
+plot_disease_group_panel &lt;- function(data, analyte_list, group_title) {
+  # Filter data for these analytes and remove non-positive MFI values for log scale
+  plot_data &lt;- data %&gt;%
+    filter(Analyte %in% analyte_list, !is.na(MFI_Net), MFI_Net &gt; 0) %&gt;%
+    mutate(
+      # Clean analyte names for display
+      Analyte_Label = str_replace(Analyte, &quot;ARB_|MAL_|NTD_|CHO_|HEP_|VPD_|HHV_|CTRL_&quot;, &quot;&quot;),
+      Analyte_Label = str_replace(Analyte_Label, &quot;SNAP_&quot;, &quot;&quot;),
+      Analyte_Label = factor(Analyte_Label, levels = unique(Analyte_Label)),
+      SampleType = factor(SampleType, levels = c(&quot;Normal&quot;, &quot;PBT&quot;, &quot;Faint Eluent&quot;, &quot;Faint&quot;))
+    )
+
+  # Calculate summary statistics
+  n_samples &lt;- n_distinct(plot_data$Barcode)
+  n_analytes &lt;- length(analyte_list)
+  median_mfi &lt;- median(plot_data$MFI_Net, na.rm = TRUE)
+  n_special &lt;- sum(plot_data$SampleType != &quot;Normal&quot;)
+
+  # Count by wave
+  wave_counts &lt;- plot_data %&gt;% distinct(Barcode, Wave) %&gt;% count(Wave)
+  wave_text &lt;- paste(sprintf(&quot;%s: %d&quot;, wave_counts$Wave, wave_counts$n), collapse = &quot; | &quot;)
+
+  # Create single panel plot with analyte on x-axis, colored by Wave
+  p &lt;- ggplot(plot_data, aes(x = Analyte_Label, y = MFI_Net)) +
+    geom_beeswarm(aes(color = Wave, shape = LowCount_Flag), alpha = 0.7, cex = 0.8, size = 1.2) +
+    geom_boxplot(alpha = 0.2, outlier.shape = NA, width = 0.5) +
+    scale_color_manual(
+      values = c(&#39;Wave 3&#39; = &#39;#E41A1C&#39;, &#39;Wave 5&#39; = &#39;#377EB8&#39;),
+      name = &#39;Wave&#39;
+    ) +
+    scale_shape_manual(
+      values = c(&#39;FALSE&#39; = 16, &#39;TRUE&#39; = 4),
+      labels = c(&#39;FALSE&#39; = &#39;Count OK&#39;, &#39;TRUE&#39; = &#39;Count Low&#39;),
+      name = &#39;Bead Count&#39;
+    ) +
+    scale_y_log10() +
+    labs(
+      title = group_title,
+      subtitle = sprintf(&quot;N = %d samples (%s) | %d antigens | Net MFI = %.0f&quot;,
+                         n_samples, wave_text, n_analytes, median_mfi),
+      x = &#39;Antigen&#39;,
+      y = &#39;MFI (Net, log scale)&#39;
+    ) +
+    theme_bw(base_size = 11) +
+    theme(
+      legend.position = &#39;bottom&#39;,
+      plot.title = element_text(size = 12, face = &quot;bold&quot;),
+      plot.subtitle = element_text(size = 9, color = &quot;gray30&quot;),
+      axis.text.x = element_text(angle = 45, hjust = 1, size = 9)
+    )
+
+  return(p)
+}
+
+# Helper function to plot SNAP ratio by plate
+plot_snap_ratio_beeswarm &lt;- function(data, analyte_name) {
+  # Filter data for this analyte and remove non-finite values
+  plot_data &lt;- data %&gt;%
+    filter(Analyte == analyte_name, !is.na(MFI_Net_SNAP_Ratio), is.finite(MFI_Net_SNAP_Ratio), MFI_Net_SNAP_Ratio &gt; 0) %&gt;%
+    mutate(
+      # Create ordered factor for WavePlate
+      WavePlate = factor(WavePlate, levels = unique(WavePlate[order(Wave, as.numeric(PlateNumber_Clean))])),
+      SampleType = factor(SampleType, levels = c(&quot;Normal&quot;, &quot;PBT&quot;, &quot;Faint Eluent&quot;, &quot;Faint&quot;))
+    )
+
+  # Calculate summary statistics
+  n_samples &lt;- n_distinct(plot_data$Barcode)
+  median_ratio &lt;- median(plot_data$MFI_Net_SNAP_Ratio, na.rm = TRUE)
+
+  # Count by wave
+  wave_counts &lt;- plot_data %&gt;% distinct(Barcode, Wave) %&gt;% count(Wave)
+  wave_text &lt;- paste(sprintf(&quot;%s: %d&quot;, wave_counts$Wave, wave_counts$n), collapse = &quot; | &quot;)
+
+  # Create plot
+  p &lt;- ggplot(plot_data, aes(x = WavePlate, y = MFI_Net_SNAP_Ratio)) +
+    geom_hline(yintercept = 1, linetype = &quot;dashed&quot;, color = &quot;gray50&quot;, size = 0.5) +
+    geom_beeswarm(aes(color = Wave), alpha = 0.7, cex = 1.5, size = 1.5) +
+    geom_boxplot(alpha = 0.2, outlier.shape = NA, width = 0.5) +
+    scale_color_manual(
+      values = c(&#39;Wave 3&#39; = &#39;#E41A1C&#39;, &#39;Wave 5&#39; = &#39;#377EB8&#39;),
+      name = &#39;Wave&#39;
+    ) +
+    scale_y_log10() +
+    labs(
+      title = paste0(analyte_name, &quot; - SNAP Ratio&quot;),
+      subtitle = sprintf(&quot;N = %d samples (%s) | Median Ratio = %.2f | Ratio = Net MFI/CTRL_SNAP&quot;,
+                         n_samples, wave_text, median_ratio),
+      x = &#39;Wave-Plate&#39;,
+      y = &#39;SNAP Ratio (log scale)&#39;
+    ) +
+    theme_bw(base_size = 11) +
+    theme(
+      legend.position = &#39;bottom&#39;,
+      plot.title = element_text(size = 12, face = &quot;bold&quot;),
+      plot.subtitle = element_text(size = 9, color = &quot;gray30&quot;),
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    )
+
+  return(p)
+}
+
+# Helper function to plot SNAP ratio by site/district
+plot_snap_ratio_by_group &lt;- function(data, analyte_name, group_by = &quot;Site&quot;) {
+  # Filter data for this analyte and remove non-finite values
+  plot_data &lt;- data %&gt;%
+    filter(Analyte == analyte_name, !is.na(.data[[group_by]]), !is.na(MFI_Net_SNAP_Ratio), is.finite(MFI_Net_SNAP_Ratio), MFI_Net_SNAP_Ratio &gt; 0) %&gt;%
+    mutate(
+      Group = factor(.data[[group_by]]),
+      SampleType = factor(SampleType, levels = c(&quot;Normal&quot;, &quot;PBT&quot;, &quot;Faint Eluent&quot;, &quot;Faint&quot;))
+    )
+
+  # Calculate summary statistics
+  n_samples &lt;- n_distinct(plot_data$Barcode)
+  median_ratio &lt;- median(plot_data$MFI_Net_SNAP_Ratio, na.rm = TRUE)
+
+  # Count by wave
+  wave_counts &lt;- plot_data %&gt;% distinct(Barcode, Wave) %&gt;% count(Wave)
+  wave_text &lt;- paste(sprintf(&quot;%s: %d&quot;, wave_counts$Wave, wave_counts$n), collapse = &quot; | &quot;)
+
+  # Create plot
+  p &lt;- ggplot(plot_data, aes(x = Group, y = MFI_Net_SNAP_Ratio)) +
+    geom_hline(yintercept = 1, linetype = &quot;dashed&quot;, color = &quot;gray50&quot;, size = 0.5) +
+    geom_beeswarm(aes(color = Wave), alpha = 0.7, cex = 0.8, size = 1.2) +
+    geom_boxplot(alpha = 0.2, outlier.shape = NA, width = 0.5) +
+    scale_color_manual(
+      values = c(&#39;Wave 3&#39; = &#39;#E41A1C&#39;, &#39;Wave 5&#39; = &#39;#377EB8&#39;),
+      name = &#39;Wave&#39;
+    ) +
+    scale_y_log10() +
+    labs(
+      title = paste0(analyte_name, &quot; - SNAP Ratio&quot;),
+      subtitle = sprintf(&quot;N = %d samples (%s) | Median Ratio = %.2f | Ratio = Net MFI/CTRL_SNAP&quot;,
+                         n_samples, wave_text, median_ratio),
+      x = group_by,
+      y = &#39;SNAP Ratio (log scale)&#39;
+    ) +
+    theme_bw(base_size = 11) +
+    theme(
+      legend.position = &#39;bottom&#39;,
+      plot.title = element_text(size = 12, face = &quot;bold&quot;),
+      plot.subtitle = element_text(size = 9, color = &quot;gray30&quot;),
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    )
+
+  return(p)
+}</code></pre>
+<hr />
+</div>
+<div id="mfi-by-plate" class="section level1 tabset">
+<h1 class="tabset">MFI by Plate</h1>
+<div id="denv" class="section level2">
+<h2>DENV</h2>
+<pre class="r"><code># Create plots for DENV panel (sorted by serotype and antigen type)
+analytes_denv &lt;- analyte_groups$DENV
+
+for (analyte in analytes_denv) {
+  # Plot raw Net MFI
+  p &lt;- plot_sample_mfi_beeswarm(sample_mfi, analyte)
+  print(p)
+  cat(&quot;\n\n&quot;)
+
+  # If this is a SNAP antigen, also plot the ratio
+  if (str_detect(analyte, &quot;SNAP&quot;)) {
+    p_ratio &lt;- plot_snap_ratio_beeswarm(sample_mfi, analyte)
+    print(p_ratio)
+    cat(&quot;\n\n&quot;)
+  }
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-1.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-2.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-3.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-4.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-5.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-6.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-7.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-8.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-9.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-10.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-11.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-12.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-13.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-14.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-15.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-plots-16.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>12 antigens</strong>:
+DENV1-4 (3 antigens each: NS1, VLP, DIII) -
+<strong>Organization</strong>: Sorted by serotype (1→2→3→4), then by
+antigen type - <strong>Interpretation</strong>: Compare serotypes to
+identify differential exposure patterns</p>
+</div>
+<div id="other-arboviruses" class="section level2">
+<h2>Other Arboviruses</h2>
+<pre class="r"><code># Create plots for Other Arboviruses panel (sorted by virus)
+analytes_arbo &lt;- analyte_groups$Other_Arboviruses
+
+for (analyte in analytes_arbo) {
+  # Plot raw Net MFI
+  p &lt;- plot_sample_mfi_beeswarm(sample_mfi, analyte)
+  print(p)
+  cat(&quot;\n\n&quot;)
+
+  # If this is a SNAP antigen, also plot the ratio
+  if (str_detect(analyte, &quot;SNAP&quot;)) {
+    p_ratio &lt;- plot_snap_ratio_beeswarm(sample_mfi, analyte)
+    print(p_ratio)
+    cat(&quot;\n\n&quot;)
+  }
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-1.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-2.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-3.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-4.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-5.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-6.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-7.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-8.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-9.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-10.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-11.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-12.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-13.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-14.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-15.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-16.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-17.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-plots-18.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>14 antigens</strong>:
+CCHFV, CHIKV, ONNV, RVFV, USUV, WNV, YFV, ZIKV -
+<strong>Organization</strong>: Sorted alphabetically by virus, then by
+antigen type - <strong>Interpretation</strong>: Identify which
+arboviruses have evidence of exposure</p>
+</div>
+<div id="malaria" class="section level2">
+<h2>Malaria</h2>
+<pre class="r"><code># Create plots for Malaria panel
+analytes_malaria &lt;- analyte_groups$Malaria
+
+for (analyte in analytes_malaria) {
+  p &lt;- plot_sample_mfi_beeswarm(sample_mfi, analyte)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-plots-4.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>4 antigens</strong>: Pf,
+Pv, Pm, Po (all MSP1) - <strong>Organization</strong>: Sorted by species
+(Pf, Pv, Pm, Po) - <strong>Interpretation</strong>: Compare
+species-specific antibody responses</p>
+</div>
+<div id="ntd" class="section level2">
+<h2>NTD</h2>
+<pre class="r"><code># Create plots for NTD panel
+analytes_ntd &lt;- analyte_groups$NTD
+
+for (analyte in analytes_ntd) {
+  p &lt;- plot_sample_mfi_beeswarm(sample_mfi, analyte)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-plots-4.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-plots-5.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>5 antigens</strong>:
+Leishmania, Schistosomiasis, Chlamydia, Giardia, Strongyloides -
+<strong>Interpretation</strong>: Assess NTD exposure patterns</p>
+</div>
+<div id="hepatitis-cholera" class="section level2">
+<h2>Hepatitis &amp; Cholera</h2>
+<pre class="r"><code># Create plots for Hepatitis &amp; Cholera panel
+analytes_hep_cholera &lt;- analyte_groups$Hepatitis_Cholera
+
+for (analyte in analytes_hep_cholera) {
+  p &lt;- plot_sample_mfi_beeswarm(sample_mfi, analyte)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-plots-4.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>4 antigens</strong>: HEV,
+Cholera (CtxB, Inaba, Ogawa) - <strong>Organization</strong>: Hepatitis
+first, then cholera antigens - <strong>Interpretation</strong>:
+Enteric/waterborne pathogen exposure</p>
+</div>
+<div id="vpd" class="section level2">
+<h2>VPD</h2>
+<pre class="r"><code># Create plots for VPD panel
+analytes_vpd &lt;- analyte_groups$VPD
+
+for (analyte in analytes_vpd) {
+  p &lt;- plot_sample_mfi_beeswarm(sample_mfi, analyte)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-plots-4.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>4 antigens</strong>:
+Pertussis, Diphtheria, Measles, Tetanus -
+<strong>Interpretation</strong>: Vaccine-preventable disease
+exposure/vaccination status</p>
+</div>
+<div id="hhv" class="section level2">
+<h2>HHV</h2>
+<pre class="r"><code># Create plots for HHV panel
+analytes_hhv &lt;- analyte_groups$HHV
+
+for (analyte in analytes_hhv) {
+  p &lt;- plot_sample_mfi_beeswarm(sample_mfi, analyte)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/hhv-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hhv-plots-2.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>2 antigens</strong>: EBV,
+CMV - <strong>Interpretation</strong>: Herpesvirus seroprevalence</p>
+</div>
+<div id="controls" class="section level2">
+<h2>Controls</h2>
+<pre class="r"><code># Create plots for Controls
+analytes_controls &lt;- analyte_groups$Controls
+
+for (analyte in analytes_controls) {
+  p &lt;- plot_sample_mfi_beeswarm(sample_mfi, analyte)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/control-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/control-plots-2.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>2 antigens</strong>: BSA,
+SNAP - <strong>Interpretation</strong>: Negative controls - should show
+low/background signals</p>
+<hr />
+</div>
+</div>
+<div id="mfi-by-disease---sites" class="section level1 tabset">
+<h1 class="tabset">MFI by Disease - Sites</h1>
+<p>Plots show antibody responses across all health facility sites, with
+points colored by Wave.</p>
+<div id="denv-1" class="section level2">
+<h2>DENV</h2>
+<pre class="r"><code># Create plots for DENV panel with site on x-axis
+analytes_denv &lt;- analyte_groups$DENV
+
+for (analyte in analytes_denv) {
+  # Plot raw Net MFI
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;Site&quot;)
+  print(p)
+  cat(&quot;\n\n&quot;)
+
+  # If this is a SNAP antigen, also plot the ratio
+  if (str_detect(analyte, &quot;SNAP&quot;)) {
+    p_ratio &lt;- plot_snap_ratio_by_group(sample_mfi, analyte, group_by = &quot;Site&quot;)
+    print(p_ratio)
+    cat(&quot;\n\n&quot;)
+  }
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-1.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-2.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-3.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-4.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-5.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-6.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-7.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-8.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-9.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-10.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-11.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-12.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-13.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-14.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-15.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-site-plots-16.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>12 antigens</strong>:
+DENV1-4 (3 antigens each: NS1, VLP, DIII) - <strong>X-axis</strong>:
+Health facility sites - <strong>Interpretation</strong>: Compare
+antibody responses across sites</p>
+</div>
+<div id="other-arboviruses-1" class="section level2">
+<h2>Other Arboviruses</h2>
+<pre class="r"><code># Create plots for Other Arboviruses panel with site on x-axis
+analytes_arbo &lt;- analyte_groups$Other_Arboviruses
+
+for (analyte in analytes_arbo) {
+  # Plot raw Net MFI
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;Site&quot;)
+  print(p)
+  cat(&quot;\n\n&quot;)
+
+  # If this is a SNAP antigen, also plot the ratio
+  if (str_detect(analyte, &quot;SNAP&quot;)) {
+    p_ratio &lt;- plot_snap_ratio_by_group(sample_mfi, analyte, group_by = &quot;Site&quot;)
+    print(p_ratio)
+    cat(&quot;\n\n&quot;)
+  }
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-1.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-2.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-3.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-4.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-5.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-6.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-7.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-8.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-9.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-10.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-11.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-12.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-13.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-14.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-15.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-16.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-17.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-site-plots-18.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>14 antigens</strong>:
+CCHFV, CHIKV, ONNV, RVFV, USUV, WNV, YFV, ZIKV -
+<strong>X-axis</strong>: Health facility sites -
+<strong>Interpretation</strong>: Identify geographic variation in
+arbovirus exposure</p>
+</div>
+<div id="malaria-1" class="section level2">
+<h2>Malaria</h2>
+<pre class="r"><code># Create plots for Malaria panel with site on x-axis
+analytes_malaria &lt;- analyte_groups$Malaria
+
+for (analyte in analytes_malaria) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;Site&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-by-site-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-by-site-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-by-site-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-by-site-plots-4.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>4 antigens</strong>: Pf,
+Pv, Pm, Po (all MSP1) - <strong>X-axis</strong>: Health facility sites -
+<strong>Interpretation</strong>: Compare malaria exposure across
+sites</p>
+</div>
+<div id="ntd-1" class="section level2">
+<h2>NTD</h2>
+<pre class="r"><code># Create plots for NTD panel with site on x-axis
+analytes_ntd &lt;- analyte_groups$NTD
+
+for (analyte in analytes_ntd) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;Site&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-site-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-site-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-site-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-site-plots-4.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-site-plots-5.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>5 antigens</strong>:
+Leishmania, Schistosomiasis, Chlamydia, Giardia, Strongyloides -
+<strong>X-axis</strong>: Health facility sites -
+<strong>Interpretation</strong>: Assess geographic distribution of NTD
+exposure</p>
+</div>
+<div id="hepatitis-cholera-1" class="section level2">
+<h2>Hepatitis &amp; Cholera</h2>
+<pre class="r"><code># Create plots for Hepatitis &amp; Cholera panel with site on x-axis
+analytes_hep_cholera &lt;- analyte_groups$Hepatitis_Cholera
+
+for (analyte in analytes_hep_cholera) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;Site&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-by-site-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-by-site-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-by-site-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-by-site-plots-4.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>4 antigens</strong>: HEV,
+Cholera (CtxB, Inaba, Ogawa) - <strong>X-axis</strong>: Health facility
+sites - <strong>Interpretation</strong>: Compare enteric/waterborne
+pathogen exposure by location</p>
+</div>
+<div id="vpd-1" class="section level2">
+<h2>VPD</h2>
+<pre class="r"><code># Create plots for VPD panel with site on x-axis
+analytes_vpd &lt;- analyte_groups$VPD
+
+for (analyte in analytes_vpd) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;Site&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-by-site-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-by-site-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-by-site-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-by-site-plots-4.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>4 antigens</strong>:
+Pertussis, Diphtheria, Measles, Tetanus - <strong>X-axis</strong>:
+Health facility sites - <strong>Interpretation</strong>: Compare
+vaccination coverage or VPD exposure across sites</p>
+</div>
+<div id="hhv-1" class="section level2">
+<h2>HHV</h2>
+<pre class="r"><code># Create plots for HHV panel with site on x-axis
+analytes_hhv &lt;- analyte_groups$HHV
+
+for (analyte in analytes_hhv) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;Site&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/hhv-by-site-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hhv-by-site-plots-2.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>2 antigens</strong>: EBV,
+CMV - <strong>X-axis</strong>: Health facility sites -
+<strong>Interpretation</strong>: Compare herpesvirus seroprevalence
+across sites</p>
+</div>
+<div id="controls-1" class="section level2">
+<h2>Controls</h2>
+<pre class="r"><code># Create plots for Controls with site on x-axis
+analytes_controls &lt;- analyte_groups$Controls
+
+for (analyte in analytes_controls) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;Site&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/control-by-site-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/control-by-site-plots-2.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>2 antigens</strong>: BSA,
+SNAP - <strong>X-axis</strong>: Health facility sites -
+<strong>Interpretation</strong>: Negative controls - should show
+low/background signals across all sites</p>
+<hr />
+</div>
+</div>
+<div id="mfi-by-disease---districts" class="section level1 tabset">
+<h1 class="tabset">MFI by Disease - Districts</h1>
+<p>Plots show antibody responses across districts, with points colored
+by Wave.</p>
+<div id="denv-2" class="section level2">
+<h2>DENV</h2>
+<pre class="r"><code># Create plots for DENV panel with district on x-axis
+analytes_denv &lt;- analyte_groups$DENV
+
+for (analyte in analytes_denv) {
+  # Plot raw Net MFI
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;District&quot;)
+  print(p)
+  cat(&quot;\n\n&quot;)
+
+  # If this is a SNAP antigen, also plot the ratio
+  if (str_detect(analyte, &quot;SNAP&quot;)) {
+    p_ratio &lt;- plot_snap_ratio_by_group(sample_mfi, analyte, group_by = &quot;District&quot;)
+    print(p_ratio)
+    cat(&quot;\n\n&quot;)
+  }
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-1.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-2.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-3.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-4.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-5.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-6.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-7.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-8.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-9.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-10.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-11.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-12.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-13.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-14.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-15.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-by-district-plots-16.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>12 antigens</strong>:
+DENV1-4 (3 antigens each: NS1, VLP, DIII) - <strong>X-axis</strong>:
+Districts - <strong>Interpretation</strong>: Compare antibody responses
+across districts</p>
+</div>
+<div id="other-arboviruses-2" class="section level2">
+<h2>Other Arboviruses</h2>
+<pre class="r"><code># Create plots for Other Arboviruses panel with district on x-axis
+analytes_arbo &lt;- analyte_groups$Other_Arboviruses
+
+for (analyte in analytes_arbo) {
+  # Plot raw Net MFI
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;District&quot;)
+  print(p)
+  cat(&quot;\n\n&quot;)
+
+  # If this is a SNAP antigen, also plot the ratio
+  if (str_detect(analyte, &quot;SNAP&quot;)) {
+    p_ratio &lt;- plot_snap_ratio_by_group(sample_mfi, analyte, group_by = &quot;District&quot;)
+    print(p_ratio)
+    cat(&quot;\n\n&quot;)
+  }
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-1.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-2.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-3.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-4.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-5.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-6.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-7.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-8.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-9.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-10.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-11.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-12.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-13.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-14.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-15.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-16.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-17.png" alt="" width="960" /></p>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-by-district-plots-18.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>14 antigens</strong>:
+CCHFV, CHIKV, ONNV, RVFV, USUV, WNV, YFV, ZIKV -
+<strong>X-axis</strong>: Districts - <strong>Interpretation</strong>:
+Identify district-level variation in arbovirus exposure</p>
+</div>
+<div id="malaria-2" class="section level2">
+<h2>Malaria</h2>
+<pre class="r"><code># Create plots for Malaria panel with district on x-axis
+analytes_malaria &lt;- analyte_groups$Malaria
+
+for (analyte in analytes_malaria) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;District&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-by-district-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-by-district-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-by-district-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/malaria-by-district-plots-4.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>4 antigens</strong>: Pf,
+Pv, Pm, Po (all MSP1) - <strong>X-axis</strong>: Districts -
+<strong>Interpretation</strong>: Compare malaria exposure across
+districts</p>
+</div>
+<div id="ntd-2" class="section level2">
+<h2>NTD</h2>
+<pre class="r"><code># Create plots for NTD panel with district on x-axis
+analytes_ntd &lt;- analyte_groups$NTD
+
+for (analyte in analytes_ntd) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;District&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-district-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-district-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-district-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-district-plots-4.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/ntd-by-district-plots-5.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>5 antigens</strong>:
+Leishmania, Schistosomiasis, Chlamydia, Giardia, Strongyloides -
+<strong>X-axis</strong>: Districts - <strong>Interpretation</strong>:
+Assess district-level distribution of NTD exposure</p>
+</div>
+<div id="hepatitis-cholera-2" class="section level2">
+<h2>Hepatitis &amp; Cholera</h2>
+<pre class="r"><code># Create plots for Hepatitis &amp; Cholera panel with district on x-axis
+analytes_hep_cholera &lt;- analyte_groups$Hepatitis_Cholera
+
+for (analyte in analytes_hep_cholera) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;District&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-by-district-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-by-district-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-by-district-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hep-cholera-by-district-plots-4.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>4 antigens</strong>: HEV,
+Cholera (CtxB, Inaba, Ogawa) - <strong>X-axis</strong>: Districts -
+<strong>Interpretation</strong>: Compare enteric/waterborne pathogen
+exposure by district</p>
+</div>
+<div id="vpd-2" class="section level2">
+<h2>VPD</h2>
+<pre class="r"><code># Create plots for VPD panel with district on x-axis
+analytes_vpd &lt;- analyte_groups$VPD
+
+for (analyte in analytes_vpd) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;District&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-by-district-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-by-district-plots-2.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-by-district-plots-3.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/vpd-by-district-plots-4.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>4 antigens</strong>:
+Pertussis, Diphtheria, Measles, Tetanus - <strong>X-axis</strong>:
+Districts - <strong>Interpretation</strong>: Compare vaccination
+coverage or VPD exposure across districts</p>
+</div>
+<div id="hhv-2" class="section level2">
+<h2>HHV</h2>
+<pre class="r"><code># Create plots for HHV panel with district on x-axis
+analytes_hhv &lt;- analyte_groups$HHV
+
+for (analyte in analytes_hhv) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;District&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/hhv-by-district-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/hhv-by-district-plots-2.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>2 antigens</strong>: EBV,
+CMV - <strong>X-axis</strong>: Districts -
+<strong>Interpretation</strong>: Compare herpesvirus seroprevalence
+across districts</p>
+</div>
+<div id="controls-2" class="section level2">
+<h2>Controls</h2>
+<pre class="r"><code># Create plots for Controls with district on x-axis
+analytes_controls &lt;- analyte_groups$Controls
+
+for (analyte in analytes_controls) {
+  p &lt;- plot_sample_mfi_by_site(sample_mfi, analyte, group_by = &quot;District&quot;)
+  print(p)
+}</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/control-by-district-plots-1.png" alt="" width="960" /><img src="Exploratory_Analysis_NetMFI_files/figure-html/control-by-district-plots-2.png" alt="" width="960" /></p>
+<p><strong>Panel Summary:</strong> - <strong>2 antigens</strong>: BSA,
+SNAP - <strong>X-axis</strong>: Districts -
+<strong>Interpretation</strong>: Negative controls - should show
+low/background signals across all districts</p>
+<hr />
+</div>
+</div>
+<div id="correlation-analysis---pairs-plots" class="section level1">
+<h1>Correlation Analysis - Pairs Plots</h1>
+<pre class="r"><code># Prepare wide format data for pairs plots (one row per sample)
+# Filter for positive MFI values since we&#39;ll use log transformation
+sample_wide &lt;- sample_mfi %&gt;%
+  filter(!is.na(MFI_Net), MFI_Net &gt; 0) %&gt;%
+  select(Barcode, PlateNumber, Wave, Analyte, MFI_Net) %&gt;%
+  pivot_wider(
+    names_from = Analyte,
+    values_from = MFI_Net,
+    values_fn = mean  # Average across plates if sample appears multiple times
+  )
+
+cat(sprintf(&quot;Prepared wide format data: %d samples × %d analytes\n&quot;,
+            nrow(sample_wide), ncol(sample_wide) - 3))</code></pre>
+<pre><code>## Prepared wide format data: 1375 samples × 47 analytes</code></pre>
+<div id="denv-serotype-correlations" class="section level2">
+<h2>DENV Serotype Correlations</h2>
+<pre class="r"><code>library(GGally)
+
+# Select ALL DENV antigens (NS1, VLP, DIII for all 4 serotypes)
+denv_analytes &lt;- c(
+  &quot;ARB_DENV1_NS1&quot;, &quot;ARB_DENV1_VLP&quot;, &quot;ARB_SNAP_DENV1_DIII&quot;,
+  &quot;ARB_DENV2_NS1&quot;, &quot;ARB_DENV2_VLP&quot;, &quot;ARB_SNAP_DENV2_DIII&quot;,
+  &quot;ARB_DENV3_NS1&quot;, &quot;ARB_DENV3_VLP&quot;, &quot;ARB_SNAP_DENV3_DIII&quot;,
+  &quot;ARB_DENV4_NS1&quot;, &quot;ARB_DENV4_VLP&quot;, &quot;ARB_SNAP_DENV4_DIII&quot;
+)
+
+denv_data &lt;- sample_wide %&gt;%
+  select(all_of(denv_analytes)) %&gt;%
+  # Rename for cleaner plot labels
+  rename(
+    &quot;DENV1_NS1&quot; = ARB_DENV1_NS1,
+    &quot;DENV1_VLP&quot; = ARB_DENV1_VLP,
+    &quot;DENV1_DIII&quot; = ARB_SNAP_DENV1_DIII,
+    &quot;DENV2_NS1&quot; = ARB_DENV2_NS1,
+    &quot;DENV2_VLP&quot; = ARB_DENV2_VLP,
+    &quot;DENV2_DIII&quot; = ARB_SNAP_DENV2_DIII,
+    &quot;DENV3_NS1&quot; = ARB_DENV3_NS1,
+    &quot;DENV3_VLP&quot; = ARB_DENV3_VLP,
+    &quot;DENV3_DIII&quot; = ARB_SNAP_DENV3_DIII,
+    &quot;DENV4_NS1&quot; = ARB_DENV4_NS1,
+    &quot;DENV4_VLP&quot; = ARB_DENV4_VLP,
+    &quot;DENV4_DIII&quot; = ARB_SNAP_DENV4_DIII
+  ) %&gt;%
+  # Apply log10 transformation
+  mutate(across(everything(), ~ log10(.x + 1)))
+
+# Create pairs plot
+ggpairs(
+  denv_data,
+  upper = list(continuous = wrap(&quot;cor&quot;, size = 3.5, color = &quot;blue&quot;)),
+  lower = list(continuous = wrap(&quot;points&quot;, alpha = 0.4, size = 0.6)),
+  diag = list(continuous = wrap(&quot;densityDiag&quot;, alpha = 0.5, fill = &quot;steelblue&quot;)),
+  title = &quot;DENV Serotype Correlations - All Antigens (Log10 Scale)&quot;,
+  axisLabels = &quot;show&quot;
+) +
+  theme_bw(base_size = 9)</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/denv-pairs-1.png" alt="" width="1344" /></p>
+<p><strong>Interpretation:</strong> - <strong>All 12 DENV
+antigens</strong>: NS1, VLP, and DIII for serotypes 1-4 - <strong>Log10
+scale</strong>: MFI values transformed as log10(MFI + 1) - <strong>High
+correlations (&gt;0.7)</strong>: Suggests cross-reactive antibodies or
+co-infections - <strong>Low correlations (&lt;0.3)</strong>:
+Serotype-specific responses - Compare antigen types (NS1 vs VLP vs DIII)
+to assess differential responses</p>
+</div>
+<div id="flavivirus-correlations---ns1-antigens" class="section level2">
+<h2>Flavivirus Correlations - NS1 Antigens</h2>
+<pre class="r"><code># Select NS1 antigens for all major flaviviruses (including all 4 DENV serotypes)
+flavivirus_ns1_analytes &lt;- c(
+  &quot;ARB_DENV1_NS1&quot;,
+  &quot;ARB_DENV2_NS1&quot;,
+  &quot;ARB_DENV3_NS1&quot;,
+  &quot;ARB_DENV4_NS1&quot;,
+  &quot;ARB_ZIKV_NS1&quot;,
+  &quot;ARB_YFV_NS1&quot;,
+  &quot;ARB_WNV_NS1&quot;,
+  &quot;ARB_USUV_NS1&quot;
+)
+
+flavi_ns1_data &lt;- sample_wide %&gt;%
+  select(all_of(flavivirus_ns1_analytes)) %&gt;%
+  # Rename for cleaner labels
+  rename(
+    &quot;DENV1&quot; = ARB_DENV1_NS1,
+    &quot;DENV2&quot; = ARB_DENV2_NS1,
+    &quot;DENV3&quot; = ARB_DENV3_NS1,
+    &quot;DENV4&quot; = ARB_DENV4_NS1,
+    &quot;ZIKV&quot; = ARB_ZIKV_NS1,
+    &quot;YFV&quot; = ARB_YFV_NS1,
+    &quot;WNV&quot; = ARB_WNV_NS1,
+    &quot;USUV&quot; = ARB_USUV_NS1
+  ) %&gt;%
+  # Apply log10 transformation
+  mutate(across(everything(), ~ log10(.x + 1)))
+
+# Create pairs plot
+ggpairs(
+  flavi_ns1_data,
+  upper = list(continuous = wrap(&quot;cor&quot;, size = 4, color = &quot;darkgreen&quot;)),
+  lower = list(continuous = wrap(&quot;points&quot;, alpha = 0.4, size = 0.6)),
+  diag = list(continuous = wrap(&quot;densityDiag&quot;, alpha = 0.5, fill = &quot;darkgreen&quot;)),
+  title = &quot;Flavivirus Correlations - NS1 Antigens (Log10 Scale)&quot;,
+  axisLabels = &quot;show&quot;
+) +
+  theme_bw(base_size = 10)</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/flavivirus-ns1-pairs-1.png" alt="" width="1344" /></p>
+<p><strong>Interpretation:</strong> - <strong>NS1 antigens</strong> for
+all major flaviviruses (DENV1-4, ZIKV, YFV, WNV, USUV) - <strong>Log10
+scale</strong>: MFI values transformed as log10(MFI + 1) - Flaviviruses
+are known for serological cross-reactivity - <strong>High
+correlations</strong>: Expected due to conserved NS1 epitopes - Compare
+all 4 DENV serotypes with other flaviviruses</p>
+</div>
+<div id="flavivirus-correlations---diii-antigens"
+class="section level2">
+<h2>Flavivirus Correlations - DIII Antigens</h2>
+<pre class="r"><code># Select DIII antigens for all major flaviviruses (including all 4 DENV serotypes)
+flavivirus_diii_analytes &lt;- c(
+  &quot;ARB_SNAP_DENV1_DIII&quot;,
+  &quot;ARB_SNAP_DENV2_DIII&quot;,
+  &quot;ARB_SNAP_DENV3_DIII&quot;,
+  &quot;ARB_SNAP_DENV4_DIII&quot;,
+  &quot;ARB_SNAP_ZIKV_DIII&quot;,
+  &quot;ARB_SNAP_YFV_DIII&quot;,
+  &quot;ARB_SNAP_WNV_DIII&quot;,
+  &quot;ARB_SNAP_USUV_DIII&quot;
+)
+
+flavi_diii_data &lt;- sample_wide %&gt;%
+  select(all_of(flavivirus_diii_analytes)) %&gt;%
+  # Rename for cleaner labels
+  rename(
+    &quot;DENV1&quot; = ARB_SNAP_DENV1_DIII,
+    &quot;DENV2&quot; = ARB_SNAP_DENV2_DIII,
+    &quot;DENV3&quot; = ARB_SNAP_DENV3_DIII,
+    &quot;DENV4&quot; = ARB_SNAP_DENV4_DIII,
+    &quot;ZIKV&quot; = ARB_SNAP_ZIKV_DIII,
+    &quot;YFV&quot; = ARB_SNAP_YFV_DIII,
+    &quot;WNV&quot; = ARB_SNAP_WNV_DIII,
+    &quot;USUV&quot; = ARB_SNAP_USUV_DIII
+  ) %&gt;%
+  # Apply log10 transformation
+  mutate(across(everything(), ~ log10(.x + 1)))
+
+# Create pairs plot
+ggpairs(
+  flavi_diii_data,
+  upper = list(continuous = wrap(&quot;cor&quot;, size = 4, color = &quot;darkgreen&quot;)),
+  lower = list(continuous = wrap(&quot;points&quot;, alpha = 0.4, size = 0.6)),
+  diag = list(continuous = wrap(&quot;densityDiag&quot;, alpha = 0.5, fill = &quot;darkgreen&quot;)),
+  title = &quot;Flavivirus Correlations - DIII Antigens (Log10 Scale)&quot;,
+  axisLabels = &quot;show&quot;
+) +
+  theme_bw(base_size = 10)</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/flavivirus-diii-pairs-1.png" alt="" width="1344" /></p>
+<p><strong>Interpretation:</strong> - <strong>Domain III (DIII)
+antigens</strong> for all major flaviviruses (DENV1-4, ZIKV, YFV, WNV,
+USUV) - <strong>Log10 scale</strong>: MFI values transformed as
+log10(MFI + 1) - DIII contains receptor binding domains and neutralizing
+epitopes - Compare NS1 vs DIII correlations to assess different antibody
+populations - DIII may show more virus-specific responses compared to
+NS1 - Compare all 4 DENV serotypes with other flaviviruses</p>
+</div>
+<div id="other-arbovirus-correlations" class="section level2">
+<h2>Other Arbovirus Correlations</h2>
+<pre class="r"><code># Select ALL other arbovirus antigens (14 total)
+other_arbo_analytes &lt;- c(
+  &quot;ARB_CCHFV_NP&quot;,
+  &quot;ARB_CHIKV_E2&quot;, &quot;ARB_CHIKV_VLP&quot;,
+  &quot;ARB_ONNV_E2&quot;,
+  &quot;ARB_RVFV&quot;,
+  &quot;ARB_USUV_NS1&quot;, &quot;ARB_SNAP_USUV_DIII&quot;,
+  &quot;ARB_WNV_NS1&quot;, &quot;ARB_SNAP_WNV_DIII&quot;,
+  &quot;ARB_YFV_NS1&quot;, &quot;ARB_SNAP_YFV_DIII&quot;,
+  &quot;ARB_ZIKV_NS1&quot;, &quot;ARB_ZIKV_VLP&quot;, &quot;ARB_SNAP_ZIKV_DIII&quot;
+)
+
+other_arbo_data &lt;- sample_wide %&gt;%
+  select(all_of(other_arbo_analytes)) %&gt;%
+  # Rename for cleaner labels
+  rename(
+    &quot;CCHFV_NP&quot; = ARB_CCHFV_NP,
+    &quot;CHIKV_E2&quot; = ARB_CHIKV_E2,
+    &quot;CHIKV_VLP&quot; = ARB_CHIKV_VLP,
+    &quot;ONNV_E2&quot; = ARB_ONNV_E2,
+    &quot;RVFV&quot; = ARB_RVFV,
+    &quot;USUV_NS1&quot; = ARB_USUV_NS1,
+    &quot;USUV_DIII&quot; = ARB_SNAP_USUV_DIII,
+    &quot;WNV_NS1&quot; = ARB_WNV_NS1,
+    &quot;WNV_DIII&quot; = ARB_SNAP_WNV_DIII,
+    &quot;YFV_NS1&quot; = ARB_YFV_NS1,
+    &quot;YFV_DIII&quot; = ARB_SNAP_YFV_DIII,
+    &quot;ZIKV_NS1&quot; = ARB_ZIKV_NS1,
+    &quot;ZIKV_VLP&quot; = ARB_ZIKV_VLP,
+    &quot;ZIKV_DIII&quot; = ARB_SNAP_ZIKV_DIII
+  ) %&gt;%
+  # Apply log10 transformation
+  mutate(across(everything(), ~ log10(.x + 1)))
+
+# Create pairs plot
+ggpairs(
+  other_arbo_data,
+  upper = list(continuous = wrap(&quot;cor&quot;, size = 3, color = &quot;darkred&quot;)),
+  lower = list(continuous = wrap(&quot;points&quot;, alpha = 0.4, size = 0.5)),
+  diag = list(continuous = wrap(&quot;densityDiag&quot;, alpha = 0.5, fill = &quot;darkred&quot;)),
+  title = &quot;Other Arbovirus Correlations - All Antigens (Log10 Scale)&quot;,
+  axisLabels = &quot;show&quot;
+) +
+  theme_bw(base_size = 8)</code></pre>
+<p><img src="Exploratory_Analysis_NetMFI_files/figure-html/other-arbo-pairs-1.png" alt="" width="1536" /></p>
+<p><strong>Interpretation:</strong> - <strong>All 14 non-DENV arbovirus
+antigens</strong> included - <strong>Log10 scale</strong>: MFI values
+transformed as log10(MFI + 1) - <strong>Alphaviruses</strong> (CHIKV,
+ONNV): Expect some cross-reactivity - <strong>Flaviviruses</strong>
+(USUV, WNV, YFV, ZIKV): Expect high cross-reactivity among NS1 and DIII
+antigens - <strong>Other families</strong> (CCHFV bunyavirus, RVFV
+phlebovirus): Lower correlations, independent exposures - Compare
+antigen types within viruses (NS1 vs VLP vs DIII)</p>
+<hr />
+</div>
+</div>
+<div id="session-info" class="section level1">
+<h1>Session Info</h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.5.2 (2025-10-31)
+## Platform: aarch64-apple-darwin20
+## Running under: macOS Tahoe 26.2
+## 
+## Matrix products: default
+## BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## time zone: America/Los_Angeles
+## tzcode source: internal
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] GGally_2.4.0     patchwork_1.3.2  knitr_1.51       ggbeeswarm_0.7.3
+##  [5] lubridate_1.9.5  forcats_1.0.1    stringr_1.6.0    dplyr_1.2.1     
+##  [9] purrr_1.2.1      readr_2.1.6      tidyr_1.3.2      tibble_3.3.1    
+## [13] ggplot2_4.0.2    tidyverse_2.0.0  rmarkdown_2.30  
+## 
+## loaded via a namespace (and not attached):
+##  [1] sass_0.4.10        utf8_1.2.6         generics_0.1.4     stringi_1.8.7     
+##  [5] hms_1.1.4          digest_0.6.39      magrittr_2.0.5     evaluate_1.0.5    
+##  [9] grid_4.5.2         timechange_0.4.0   RColorBrewer_1.1-3 fastmap_1.2.0     
+## [13] jsonlite_2.0.0     scales_1.4.0       jquerylib_0.1.4    cli_3.6.5         
+## [17] rlang_1.1.7        crayon_1.5.3       bit64_4.6.0-1      withr_3.0.2       
+## [21] cachem_1.1.0       yaml_2.3.12        otel_0.2.0         tools_4.5.2       
+## [25] parallel_4.5.2     tzdb_0.5.0         ggstats_0.12.0     vctrs_0.7.2       
+## [29] R6_2.6.1           lifecycle_1.0.5    bit_4.6.0          vipor_0.4.7       
+## [33] vroom_1.7.0        pkgconfig_2.0.3    beeswarm_0.4.0     pillar_1.11.1     
+## [37] bslib_0.10.0       gtable_0.3.6       glue_1.8.0         xfun_0.56         
+## [41] tidyselect_1.2.1   farver_2.1.2       htmltools_0.5.9    labeling_0.4.3    
+## [45] compiler_4.5.2     S7_0.2.1</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
