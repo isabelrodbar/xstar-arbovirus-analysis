@@ -1,47 +1,110 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.3">
-  <style type="text/css">
-    body {background-color: #f2f2f2}
-    p.p3 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px 'Helvetica Neue'; -webkit-text-stroke: #000000}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.8px 'Helvetica Neue'; color: #212f3f; -webkit-text-stroke: #212f3f}
-    p.p7 {margin: 0.0px 0.0px 10.8px 0.0px; text-align: center; font: 10.8px 'Helvetica Neue'; color: #6c797a; -webkit-text-stroke: #6c797a}
-    li.li6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; -webkit-text-stroke: #000000}
-    span.s1 {font-kerning: none; background-color: #ffffff}
-    span.s2 {font-kerning: none; background-color: #e3f1f6}
-    span.s3 {font: 14.0px '.Apple Color Emoji UI'; font-kerning: none; background-color: #e7eced}
-    span.s4 {font: 14.0px 'Helvetica Neue'; font-kerning: none}
-    span.s5 {font-kerning: none; background-color: #e7eced}
-    span.s6 {font-kerning: none}
-    span.s7 {background-color: #ffffff; -webkit-text-stroke: 0px #000000}
-    ul.ul1 {list-style-type: disc}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xstar Arbovirus - Exploratory Analysis</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        .analysis-link {
+            display: block;
+            padding: 20px;
+            margin: 15px 0;
+            background-color: #ecf0f1;
+            border-left: 4px solid #3498db;
+            text-decoration: none;
+            color: #2c3e50;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .analysis-link:hover {
+            background-color: #3498db;
+            color: white;
+            transform: translateX(5px);
+        }
+        .analysis-link h3 {
+            margin: 0 0 10px 0;
+            color: inherit;
+        }
+        .analysis-link p {
+            margin: 0;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .info-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
-<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; font: 24.0px 'Helvetica Neue'; color: #212f3f; -webkit-text-stroke: #212f3f"><span class="s1"><b>Xstar Arbovirus Study - Uganda</b><b></b></span></h1>
-<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; font: 18.0px 'Helvetica Neue'; color: #28384b; -webkit-text-stroke: #28384b"><span class="s1"><b>Exploratory Data Analysis</b><b></b></span></h2>
-<p class="p3"><span class="s2"><b>Waves:</b> Wave 3 &amp; Wave 5</span></p>
-<p class="p3"><span class="s2"><b>Samples:</b> Uganda cross-sectional samples from LLINEUP-2 and PRISM3</span></p>
-<p class="p3"><span class="s2"><b>Antigens:</b> 47 antigens across arboviruses, malaria, NTDs, and other pathogens</span></p>
-<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; font: 18.0px 'Helvetica Neue'; color: #28384b; -webkit-text-stroke: #28384b"><span class="s1"><b>Available Analyses</b><b></b></span></h2>
-<h3 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 14.0px 'Helvetica Neue'; color: #212f3f; -webkit-text-stroke: #212f3f"><span class="s3"><a href="Exploratory_Analysis.html">📊<span class="s4"><b> Median MFI Analysis</b><b></b></span></a></span></h3>
-<p class="p5"><span class="s5"><a href="Exploratory_Analysis.html">Exploratory analysis using Median MFI values from xPONENT output. Includes distributions by plate, site, district, correlation analyses, and SNAP antigen ratios.<span class="s6"></span></a></span></p>
-<h3 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 14.0px 'Helvetica Neue'; color: #212f3f; -webkit-text-stroke: #212f3f"><span class="s3"><a href="Exploratory_Analysis_NetMFI.html">📈<span class="s4"><b> Net MFI Analysis</b><b></b></span></a></span></h3>
-<p class="p5"><span class="s5"><a href="Exploratory_Analysis_NetMFI.html">Parallel analysis using Net MFI values. Same structure as Median MFI analysis for direct comparison of the two MFI metrics.<span class="s6"></span></a></span></p>
-<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; font: 18.0px 'Helvetica Neue'; color: #28384b; -webkit-text-stroke: #28384b"><span class="s1"><b>Analysis Features</b><b></b></span></h2>
-<ul class="ul1">
-  <li class="li6"><span class="s7"><b></b></span><span class="s1"><b>MFI Distributions:</b> By plate, health facility site, and district</span></li>
-  <li class="li6"><span class="s7"><b></b></span><span class="s1"><b>Wave Comparison:</b> Wave 3 vs Wave 5 (color-coded: red vs blue)</span></li>
-  <li class="li6"><span class="s7"><b></b></span><span class="s1"><b>Disease Panels:</b> DENV, Other Arboviruses, Malaria, NTDs, Hepatitis/Cholera, VPD, HHV, Controls</span></li>
-  <li class="li6"><span class="s7"><b></b></span><span class="s1"><b>SNAP Normalization:</b> SNAP-tagged antigens shown with both raw MFI and SNAP ratios</span></li>
-  <li class="li6"><span class="s7"><b></b></span><span class="s1"><b>Correlation Analysis:</b> Pairs plots for DENV serotypes and flaviviruses</span></li>
-  <li class="li6"><span class="s7"><b></b></span><span class="s1"><b>Interactive:</b> Collapsible sections, code folding, floating table of contents</span></li>
-</ul>
-<p class="p7"><span class="s1">Generated using R Markdown | Last updated: May 2026</span></p>
+    <div class="container">
+        <h1>Xstar Arbovirus Study - Uganda</h1>
+        <h2>Exploratory Data Analysis</h2>
+
+        <div class="info-box">
+            <p><strong>Waves:</strong> Wave 3 & Wave 5</p>
+            <p><strong>Samples:</strong> Uganda cross-sectional samples from LLINEUP-2 and PRISM3</p>
+            <p><strong>Antigens:</strong> 47 antigens across arboviruses, malaria, NTDs, and other pathogens</p>
+        </div>
+
+        <h2>Available Analyses</h2>
+
+        <a href="Exploratory_Analysis.html" class="analysis-link">
+            <h3>📊 Median MFI Analysis</h3>
+            <p>Exploratory analysis using Median MFI values from xPONENT output. Includes distributions by plate, site, district, correlation analyses, and SNAP antigen ratios.</p>
+        </a>
+
+        <a href="Exploratory_Analysis_NetMFI.html" class="analysis-link">
+            <h3>📈 Net MFI Analysis</h3>
+            <p>Parallel analysis using Net MFI values. Same structure as Median MFI analysis for direct comparison of the two MFI metrics.</p>
+        </a>
+
+        <h2>Analysis Features</h2>
+        <ul>
+            <li><strong>MFI Distributions:</strong> By plate, health facility site, and district</li>
+            <li><strong>Wave Comparison:</strong> Wave 3 vs Wave 5 (color-coded: red vs blue)</li>
+            <li><strong>Disease Panels:</strong> DENV, Other Arboviruses, Malaria, NTDs, Hepatitis/Cholera, VPD, HHV, Controls</li>
+            <li><strong>SNAP Normalization:</strong> SNAP-tagged antigens shown with both raw MFI and SNAP ratios</li>
+            <li><strong>Correlation Analysis:</strong> Pairs plots for DENV serotypes and flaviviruses</li>
+            <li><strong>Interactive:</strong> Collapsible sections, code folding, floating table of contents</li>
+        </ul>
+
+        <div class="footer">
+            <p>Generated using R Markdown | Last updated: May 2026</p>
+        </div>
+    </div>
 </body>
 </html>
