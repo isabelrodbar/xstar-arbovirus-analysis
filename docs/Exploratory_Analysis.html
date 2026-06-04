@@ -11,7 +11,7 @@
 
 <meta name="author" content="Sample MFI Distributions" />
 
-<meta name="date" content="2026-05-26" />
+<meta name="date" content="2026-06-04" />
 
 <title>Xstar Arbovirus - Exploratory Data Analysis</title>
 
@@ -253,7 +253,7 @@ div.tocify {
 <h1 class="title toc-ignore">Xstar Arbovirus - Exploratory Data
 Analysis</h1>
 <h4 class="author">Sample MFI Distributions</h4>
-<h4 class="date">2026-05-26</h4>
+<h4 class="date">2026-06-04</h4>
 
 </div>
 
@@ -287,11 +287,11 @@ mfi_long &lt;- mfi_long %&gt;%
   )
 
 cat(sprintf(&quot;Loaded MFI data with metadata: %d rows\n&quot;, nrow(mfi_long)))</code></pre>
-<pre><code>## Loaded MFI data with metadata: 113082 rows</code></pre>
+<pre><code>## Loaded MFI data with metadata: 145465 rows</code></pre>
 <pre class="r"><code>cat(sprintf(&quot;Unique regions: %d\n&quot;, n_distinct(mfi_long$region, na.rm = TRUE)))</code></pre>
 <pre><code>## Unique regions: 7</code></pre>
 <pre class="r"><code>cat(sprintf(&quot;Unique sites (mrccode): %d\n&quot;, n_distinct(mfi_long$mrccode, na.rm = TRUE)))</code></pre>
-<pre><code>## Unique sites (mrccode): 19</code></pre>
+<pre><code>## Unique sites (mrccode): 27</code></pre>
 <pre class="r"><code>cat(sprintf(&quot;Waves: %s\n&quot;, paste(unique(mfi_long$Wave), collapse = &quot;, &quot;)))</code></pre>
 <pre><code>## Waves: Wave 3, Wave 5, Wave 4</code></pre>
 <pre class="r"><code># All data is already participant samples only (standards and blanks excluded in merge)
@@ -310,15 +310,15 @@ sample_mfi &lt;- sample_mfi %&gt;%
   )
 
 cat(sprintf(&quot;Sample data (LLINEUP2 participants): %d measurements\n&quot;, nrow(sample_mfi)))</code></pre>
-<pre><code>## Sample data (LLINEUP2 participants): 104340 measurements</code></pre>
+<pre><code>## Sample data (LLINEUP2 participants): 136723 measurements</code></pre>
 <pre class="r"><code>cat(sprintf(&quot;Number of unique samples (barcodes): %d\n&quot;, n_distinct(sample_mfi$Barcode)))</code></pre>
-<pre><code>## Number of unique samples (barcodes): 2149</code></pre>
+<pre><code>## Number of unique samples (barcodes): 2838</code></pre>
 <pre class="r"><code>cat(sprintf(&quot;Number of plates: %d\n&quot;, n_distinct(sample_mfi$PlateNumber)))</code></pre>
-<pre><code>## Number of plates: 23</code></pre>
+<pre><code>## Number of plates: 28</code></pre>
 <pre class="r"><code>cat(sprintf(&quot;Number of sites: %d\n&quot;, n_distinct(sample_mfi$Site, na.rm = TRUE)))</code></pre>
-<pre><code>## Number of sites: 19</code></pre>
+<pre><code>## Number of sites: 27</code></pre>
 <pre class="r"><code>cat(sprintf(&quot;Number of districts: %d\n&quot;, n_distinct(sample_mfi$District, na.rm = TRUE)))</code></pre>
-<pre><code>## Number of districts: 19</code></pre>
+<pre><code>## Number of districts: 27</code></pre>
 <pre class="r"><code>cat(sprintf(&quot;Number of regions: %d\n&quot;, n_distinct(sample_mfi$region, na.rm = TRUE)))</code></pre>
 <pre><code>## Number of regions: 7</code></pre>
 <pre class="r"><code>cat(sprintf(&quot;Number of analytes: %d\n&quot;, n_distinct(sample_mfi$Analyte)))</code></pre>
@@ -334,8 +334,8 @@ cat(sprintf(&quot;Sample data (LLINEUP2 participants): %d measurements\n&quot;, 
 <pre><code>## # A tibble: 3 × 2
 ##   Wave   n_samples
 ##   &lt;chr&gt;      &lt;int&gt;
-## 1 Wave 3      1090
-## 2 Wave 4       153
+## 1 Wave 3      1396
+## 2 Wave 4       536
 ## 3 Wave 5       906</code></pre>
 <pre class="r"><code>cat(&quot;\nSamples by site:\n&quot;)</code></pre>
 <pre><code>## 
@@ -346,28 +346,20 @@ cat(sprintf(&quot;Sample data (LLINEUP2 participants): %d measurements\n&quot;, 
   count(Site, Wave) %&gt;%
   arrange(Site, Wave) %&gt;%
   print()</code></pre>
-<pre><code>## # A tibble: 19 × 3
+<pre><code>## # A tibble: 27 × 3
 ##    Site        Wave       n
 ##    &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;
 ##  1 Aboke       Wave 3   142
 ##  2 Anyeke      Wave 3   115
-##  3 Bbaale      Wave 5    52
-##  4 Butagaya    Wave 5   133
-##  5 Diima       Wave 3   151
-##  6 Kapelebyong Wave 3   143
-##  7 Kasambya    Wave 4    69
-##  8 Kibaale     Wave 5    98
-##  9 Kidera      Wave 5   131
-## 10 Kigandalo   Wave 5   118
-## 11 Kigorobya   Wave 3   135
-## 12 Kiyunga     Wave 5   126
-## 13 Kyatiri     Wave 3   121
-## 14 Kyegegwa    Wave 5    59
-## 15 Lobule      Wave 4     3
-## 16 Lokolia     Wave 3   134
-## 17 Nawaikoke   Wave 5   143
-## 18 Opia        Wave 4    81
-## 19 Patongo     Wave 3   138</code></pre>
+##  3 Asamuk      Wave 3   133
+##  4 Atiak       Wave 4    58
+##  5 Awach       Wave 4    57
+##  6 Bbaale      Wave 5    52
+##  7 Butagaya    Wave 5   133
+##  8 Diima       Wave 3   151
+##  9 Kapelebyong Wave 3   143
+## 10 Kasambya    Wave 4    69
+## # ℹ 17 more rows</code></pre>
 <pre class="r"><code>cat(&quot;\nSamples by district:\n&quot;)</code></pre>
 <pre><code>## 
 ## Samples by district:</code></pre>
@@ -377,28 +369,20 @@ cat(sprintf(&quot;Sample data (LLINEUP2 participants): %d measurements\n&quot;, 
   count(District, Wave) %&gt;%
   arrange(District, Wave) %&gt;%
   print()</code></pre>
-<pre><code>## # A tibble: 19 × 3
-##    District    Wave       n
-##    &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;
-##  1 Agago       Wave 3   138
-##  2 Arua        Wave 4    81
-##  3 Buyende     Wave 5   131
-##  4 Hoima       Wave 3   135
-##  5 Jinja       Wave 5   133
-##  6 Kaabong     Wave 3   134
-##  7 Kaliro      Wave 5   143
-##  8 Kapelebyong Wave 3   143
-##  9 Kayunga     Wave 5    52
-## 10 Kibaale     Wave 5    98
-## 11 Kiryandongo Wave 3   151
-## 12 Koboko      Wave 4     3
-## 13 Kole        Wave 3   142
-## 14 Kyegegwa    Wave 5    59
-## 15 Luuka       Wave 5   126
-## 16 Masindi     Wave 3   121
-## 17 Mayuge      Wave 5   118
-## 18 Mubende     Wave 4    69
-## 19 Oyam        Wave 3   115</code></pre>
+<pre><code>## # A tibble: 27 × 3
+##    District       Wave       n
+##    &lt;chr&gt;          &lt;chr&gt;  &lt;int&gt;
+##  1 Agago          Wave 3   138
+##  2 Amuria Distric Wave 3   133
+##  3 Amuru          Wave 4    58
+##  4 Arua           Wave 4    81
+##  5 Buyende        Wave 5   131
+##  6 Gulu           Wave 4    57
+##  7 Hoima          Wave 3   135
+##  8 Jinja          Wave 5   133
+##  9 Kaabong        Wave 3   134
+## 10 Kaliro         Wave 5   143
+## # ℹ 17 more rows</code></pre>
 <pre class="r"><code>cat(&quot;\nSamples by type:\n&quot;)</code></pre>
 <pre><code>## 
 ## Samples by type:</code></pre>
@@ -410,7 +394,7 @@ cat(sprintf(&quot;Sample data (LLINEUP2 participants): %d measurements\n&quot;, 
 <pre><code>## # A tibble: 3 × 2
 ##   SampleType   n_samples
 ##   &lt;chr&gt;            &lt;int&gt;
-## 1 Normal            2136
+## 1 Normal            2825
 ## 2 PBT                 11
 ## 3 Faint Eluent         3</code></pre>
 <pre class="r"><code># Define analyte groupings and sorting order
@@ -1362,7 +1346,7 @@ sample_wide &lt;- sample_mfi %&gt;%
 
 cat(sprintf(&quot;Prepared wide format data: %d samples × %d analytes\n&quot;,
             nrow(sample_wide), ncol(sample_wide) - 3))</code></pre>
-<pre><code>## Prepared wide format data: 2149 samples × 47 analytes</code></pre>
+<pre><code>## Prepared wide format data: 2838 samples × 47 analytes</code></pre>
 <div id="denv-serotype-correlations" class="section level2">
 <h2>DENV Serotype Correlations</h2>
 <pre class="r"><code>library(GGally)
