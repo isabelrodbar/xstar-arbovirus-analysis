@@ -6,7 +6,6 @@
 
 # Exclude data and temporary outputs
 Data/
-outputs/overall/
-outputs/temp*/
+outputs/
 *.Rmd
 *.R
